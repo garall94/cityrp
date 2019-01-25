@@ -27,12 +27,13 @@ function ENT:Think()
 	self:SetColor(Color(0, 255, 0))
 end
 function ENT:Use(activator, caller)
-	if IsValid(caller) and caller:IsPlayer() then
+	if IsValid(caller) and caller:IsPlayer(true) then
 		for k, v in pairs(ents.FindInSphere(self:GetPos(), 128)) do
-			if (v:GetClass() == "ent_dealer") or (v:GetClass() == "rp_market") or (v:GetClass() == "rp_addict") then
+			if (v:getDarkRPVar("job") == "Drug Dealer") or (v:GetClass() == "rp_market") or (v:GetClass() == "rp_addict") then
+				caller:SetUseType(SIMPLE_USE)
 				caller:addMoney(self:SellPrice())
 				caller:ChatPrint("You have sold "..string.lower(self.PrintName).." for $"..string.Comma(self:SellPrice()))
-				SafeRemoveEntity(self)
+				SafeRemoveEntity(self) 
 			end
 		end
 	end
